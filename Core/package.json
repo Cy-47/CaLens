@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "openai": "^4.71.0",
-    "sharp": "^0.33.5",
     "tesseract.js": "^5.1.1",
     "uint8array-extras": "^1.4.0"
   },

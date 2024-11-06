@@ -1,5 +1,5 @@
 import { createWorker, type Worker } from "tesseract.js";
-import sharp from "sharp";
+// import sharp from "sharp";
 import { OpenAI } from "openai";
 import { uint8ArrayToBase64 } from "uint8array-extras";
 
