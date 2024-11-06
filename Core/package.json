@@ -1,0 +1,23 @@
+{
+  "name": "@calens/core",
+  "version": "0.0.1",
+  "description": "Core functionality for CaLens: image processing and AI inference for event extractions.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "tsx test.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "openai": "^4.71.0",
+    "sharp": "^0.33.5",
+    "tesseract.js": "^5.1.1",
+    "uint8array-extras": "^1.4.0"
+  },
+  "type": "module"
+}
