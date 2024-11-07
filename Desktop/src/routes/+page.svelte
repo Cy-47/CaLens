@@ -163,14 +163,21 @@
 			appState = AppStates.error;
 			return;
 		}
+		event.start = toLocalTime(event.start);
+		event.end = toLocalTime(event.end);
 
 		log += event;
 		appState = AppStates.showResult;
-		console.log(event);
+		console.log('Parsed event', event);
 		// await open(links[0].link);
 		setTimeout(() => {
 			appWindow.setFocus();
 		}, 1000);
+	}
+	function toLocalTime(time: string) {
+		let date = new Date(time);
+		date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+		return date.toISOString().slice(0, 16);
 	}
 </script>
 
