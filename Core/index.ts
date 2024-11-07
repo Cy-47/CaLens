@@ -11,10 +11,19 @@ class Preprocessor {
   constructor(openai_key?: string) {
     console.log("initializing with api key", openai_key);
     this.initialized = this.init();
-    this.openai = new OpenAI({
-      dangerouslyAllowBrowser: true,
-      apiKey: openai_key,
-    });
+    try {
+      this.openai = new OpenAI({
+        dangerouslyAllowBrowser: true,
+        apiKey: openai_key,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error);
+        throw new Error("Failed to initialize OpenAI: " + error.message);
+      } else {
+        throw new Error("Failed to initialize OpenAI: Unknown error");
+      }
+    }
   }
 
   async init() {
@@ -43,7 +52,7 @@ class Preprocessor {
     // return ret.data.text;
   }
 
-  async extractEvent(image: Uint8Array): Promise<Object> {
+  async extractEvent(image: Uint8Array): Promise<any> {
     let image_url = "data:image/jpeg;base64," + uint8ArrayToBase64(image);
     const today = new Date();
     const response = await this.openai.beta.chat.completions.parse({
@@ -115,6 +124,7 @@ class Preprocessor {
         },
       },
     });
+    console.log(typeof response.choices[0].message.parsed);
     return response.choices[0].message.parsed;
   }
 }
