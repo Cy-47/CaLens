@@ -20,7 +20,7 @@
 		},
 		"longDescription": "",
 		"macOS": {
-			"entitlements": null,
+			"entitlements": "./Entitlements.plist",
 			"exceptionDomain": "",
 			"frameworks": [],
 			"providerShortName": null,
@@ -36,7 +36,7 @@
 	},
 	"productName": "CaLens",
 	"mainBinaryName": "CaLens",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"identifier": "net.calens",
 	"plugins": {},
 	"app": {

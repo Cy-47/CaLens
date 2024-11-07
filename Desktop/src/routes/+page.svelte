@@ -58,30 +58,8 @@
 	let assetUrl = $state('');
 	let errorMsg = $state('');
 
-	async function checkScreenRecordingPermission() {
-		try {
-			// Attempt to capture the screen
-			const stream = await navigator.mediaDevices.getDisplayMedia({
-				video: true
-			});
-
-			// If successful, stop the stream immediately
-			const tracks = stream.getTracks();
-			tracks.forEach((track) => track.stop());
-			console.log('Permission is granted');
-
-			// Permission is granted
-			return true;
-		} catch (error) {
-			// Permission is denied or an error occurred
-			console.error('Permission is denied');
-			return false;
-		}
-	}
-
 	let initialized: Promise<void> = init();
 	async function init() {
-		checkScreenRecordingPermission();
 		// Try to read config file
 		appConfigDirPath = await path.appConfigDir();
 		let configFile = await path.join(appConfigDirPath, 'config.json');
@@ -94,6 +72,17 @@
 		} else {
 			config = JSON.parse(await fs.readTextFile(configFile));
 		}
+		// Create a directory to store screenshots
+		appCacheDirPath = await path.appCacheDir();
+		screenshotDirPath = await path.join(appCacheDirPath, 'screenshots');
+		imagePath = await path.join(screenshotDirPath, 'screenshot.png');
+		assetUrl = convertFileSrc(imagePath) + '?t=';
+		// Test screenshot permission
+		Command.create('screencapture', ['-x', imagePath])
+			.execute()
+			.then((output) => {
+				console.log('Test screenshot', output);
+			});
 		// Check if API key is set
 		if (!config.apiKey) {
 			appState = AppStates.AskingForAPIKey;
@@ -104,11 +93,6 @@
 	}
 
 	async function initWithAPIKey() {
-		// Create a directory to store screenshots
-		appCacheDirPath = await path.appCacheDir();
-		screenshotDirPath = await path.join(appCacheDirPath, 'screenshots');
-		imagePath = await path.join(screenshotDirPath, 'screenshot.png');
-		assetUrl = convertFileSrc(imagePath) + '?t=';
 		try {
 			preprocessor = new Preprocessor(apiKey);
 		} catch (error) {
@@ -158,7 +142,6 @@
 		// });
 		const output = await command.execute();
 		console.log(output);
-		console.log('Screenshot taken');
 		if (!(await fs.exists(imagePath))) {
 			log += 'Screenshot failed, probably cancelled by user\n';
 			appState = AppStates.NoScreenshot;
