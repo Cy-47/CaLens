@@ -53,7 +53,10 @@
 			}
 		],
 		"security": {
-			"csp": "default-src 'self' ipc: http://ipc.localhost; img-src 'self' asset: http://asset.localhost",
+			"csp": {
+				"default-src": "'self' ipc: http://ipc.localhost; img-src 'self' asset: http://asset.localhost",
+				"connect-src": "https://api.openai.com/"
+			},
 			"assetProtocol": {
 				"enable": true,
 				"scope": ["$APPCACHE/**"]

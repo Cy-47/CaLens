@@ -168,6 +168,7 @@
 		log += `Screenshot saved to ${imagePath}`;
 		appState = AppStates.Processing;
 		appWindow.setFocus();
+		if (debug) await new Promise((r) => setTimeout(r, 1000));
 		let img: Uint8Array = await readFile(imagePath);
 
 		try {
@@ -213,7 +214,7 @@
 				data-tauri-drag-region
 				class="flex grow flex-col items-center justify-center text-xl text-gray-700"
 			>
-				<p>Initializing...</p>
+				<p>Initializing</p>
 			</div>
 		{:else if appState == AppStates.AskingForAPIKey}
 			<div
@@ -248,18 +249,31 @@
 				data-tauri-drag-region
 				class="data-tauri-drag-region flex h-full w-full grow flex-col items-center justify-center text-xl text-gray-700"
 			>
-				<p>Processing...</p>
+				<div
+					data-tauri-drag-region
+					class="m-4 mt-1 flex max-h-[50%] min-h-0 flex-1 items-center justify-center"
+				>
+					<div class="h-fit min-h-0 w-fit min-w-0">
+						<img
+							src={assetUrl + Date.now()}
+							alt="Screenshot"
+							class="mx-auto max-h-full object-center drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"
+						/>
+					</div>
+				</div>
+				<p>Processing</p>
 			</div>
 		{:else if appState == AppStates.showResult}
 			<div data-tauri-drag-region class="flex min-h-0 flex-1 flex-row">
 				<div
-					class="data-tauri-drag-region m-4 mt-1 flex min-h-0 flex-1 items-center justify-center"
+					data-tauri-drag-region
+					class="m-4 mt-1 flex min-h-0 flex-1 items-center justify-center"
 				>
 					<div class="h-fit min-h-0 w-fit">
 						<img
 							src={assetUrl + Date.now()}
 							alt="Screenshot"
-							class="max-h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"
+							class="mx-auto max-h-full drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"
 						/>
 					</div>
 				</div>
