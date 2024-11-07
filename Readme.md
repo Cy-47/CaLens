@@ -1,11 +1,14 @@
 <div align="center">
  <img src="./Desktop/src-tauri/icons/appicon.png" width=50%>
  <h1>CaLens</h1>
+
+❌ No more manual event or deadline entries!
+
+Simply take a screenshot with CeLens, and it will automatically add the event to your calendar 🚀
+
+Powered by 👀 Vision Language Models
+
 </div>
-
-No more manual event or deadline entries!
-
-Simply take a screenshot with CeLens, and it will automatically add the event to your calendar.
 
 ![CeLens Screenshot](./screenshot.png)
 _*Screenshot is taken in Pacific Time_
