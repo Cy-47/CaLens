@@ -12,7 +12,7 @@
 		"copyright": "",
 		"targets": "all",
 		"externalBin": [],
-		"icon": ["icons/1024.png", "icons/icon.icns", "icons/icon.ico"],
+		"icon": ["icons/icon.icns"],
 		"windows": {
 			"certificateThumbprint": null,
 			"digestAlgorithm": "sha256",
@@ -46,14 +46,18 @@
 				"height": 500,
 				"resizable": true,
 				"title": "CaLens",
-				"width": 400,
-				"minWidth": 400,
-				"minHeight": 500,
+				"width": 700,
+				"minWidth": 500,
+				"minHeight": 400,
 				"titleBarStyle": "Overlay"
 			}
 		],
 		"security": {
-			"csp": null
+			"csp": "default-src 'self' ipc: http://ipc.localhost; img-src 'self' asset: http://asset.localhost",
+			"assetProtocol": {
+				"enable": true,
+				"scope": ["$APPCACHE/**"]
+			}
 		}
 	}
 }
