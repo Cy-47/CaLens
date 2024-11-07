@@ -27,7 +27,7 @@ class Preprocessor {
   }
 
   async init() {
-    this.ocrWorker = await createWorker("eng");
+    // this.ocrWorker = await createWorker("eng");
   }
 
   async ocr(
