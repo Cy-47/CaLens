@@ -54,15 +54,15 @@ class Preprocessor {
 
   async extractEvent(image: Uint8Array): Promise<any> {
     let image_url = "data:image/jpeg;base64," + uint8ArrayToBase64(image);
-    const today = new Date();
+    const now = new Date();
     const response = await this.openai.beta.chat.completions.parse({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       messages: [
         {
           role: "system",
           content: [
             {
-              text: `You are part of a software that extracts events from images. Today is ${today.getDate}.\nIdentify events from the given images:`,
+              text: `You are part of a software that extracts events from images and add them to the user's calendar. You will be provided with images showing events. Your task is to extract the event information from them.\n The current time is ${now.toString()}. Provide output in JSON format.`,
               type: "text",
             },
           ],
@@ -71,18 +71,22 @@ class Preprocessor {
           role: "user",
           content: [
             {
+              type: "text",
+              text: "Extract events from this image:",
+            },
+            {
               type: "image_url",
               image_url: {
                 url: image_url,
-                detail: "low",
+                detail: "auto",
               },
             },
           ],
         },
       ],
-      temperature: 1,
-      max_tokens: 2048,
-      top_p: 1,
+      temperature: 0.3,
+      max_tokens: 128,
+      top_p: 0.9,
       frequency_penalty: 0,
       presence_penalty: 0,
       response_format: {
@@ -124,7 +128,11 @@ class Preprocessor {
         },
       },
     });
-    console.log(typeof response.choices[0].message.parsed);
+    console.log(
+      "OpenAI response",
+      typeof response.choices[0].message.parsed,
+      response.choices[0].message.parsed
+    );
     return response.choices[0].message.parsed;
   }
 }
