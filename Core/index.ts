@@ -56,7 +56,7 @@ class Preprocessor {
     let image_url = "data:image/jpeg;base64," + uint8ArrayToBase64(image);
     const today = new Date();
     const response = await this.openai.beta.chat.completions.parse({
-      model: "gpt-4o",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
