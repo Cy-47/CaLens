@@ -1,3 +1,9 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@layer components {
+	.border-b-only {
+		@apply border-0 border-b-[1px] border-gray-300 p-1 focus:ring-0;
+	}
+}
