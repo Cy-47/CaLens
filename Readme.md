@@ -1,37 +1,44 @@
 <div align="center">
- <img src="./Desktop/src-tauri/icons/appicon.png" width=50%>
+ <img src="./Desktop/src-tauri/icons/appicon.png" width=30%>
  <h1>CaLens</h1>
 
-❌ No more manual event or deadline entries!
+:x: No more manual event or deadline entries!
 
-Simply take a screenshot with CeLens, and it will automatically add the event to your calendar 🚀
+Simply take a screenshot with CeLens, and it will automatically add the event to your calendar :rocket:
 
-Powered by 👀 Vision Language Models
+Powered by :eyes: Vision Language Models
 
 </div>
 
 ![CeLens Screenshot](./screenshot.png)
-_*Screenshot is taken in Pacific Time_
+_\*Screenshot is taken in Pacific Time_
 
 ## :paperclip: Contents
 
 - [:paperclip: Contents](#paperclip-contents)
-- [:rocket: Functions](#rocket-functions)
-- [:calendar: Usage](#calendar-usage)
+- [:rocket: Features](#rocket-features)
+- [:dart: Planned](#dart-planned)
+- [:cake: Usage](#cake-usage)
 - [:hammer: Build](#hammer-build)
 
-## :rocket: Functions
+## :rocket: Features
 
-- [x] Event extraction
-- [x] Show links to mainstream calendars
-- [ ] Add multiple events in one time
-- [ ] Google calendar API integration
-- [ ] Download ICS
-- [ ] Officially hosted server
+- :crystal_ball: Intelligent extraction & summary by Vision LLM
+- :scissors: Take screenshot anywhere global shortcut
+- :link: Show links to mainstream calendars
 
-## :calendar: Usage
+## :dart: Planned
 
-The app is currently in early development. You need to provide your own OpenAI API key, which will be stored locally in the app's config directory.
+- :zap: Add multiple events in one time
+- $\int$ Google calendar API integration
+- :floppy_disk: Download ICS
+- :cloud: Officially hosted server
+
+## :cake: Usage
+
+The app is currently in early development. You will need to provide your own OpenAI API key, which will be stored locally in the app's config directory.
+
+After that, just press the shortcut to take screenshots!
 
 ## :hammer: Build
 
