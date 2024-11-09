@@ -22,8 +22,8 @@ _\*Screenshot is taken in Pacific Time_
 - [:cake: Usage](#cake-usage)
 - [:hammer: Build](#hammer-build)
 - [:art: Contribution](#art-contribution)
-  - [Language, Frameworks \& Tools](#language-frameworks--tools)
-  - [Repo structure](#repo-structure)
+  - [:book: Language, Frameworks \& Tools](#book-language-frameworks--tools)
+  - [:open\_file\_folder: Repo structure](#open_file_folder-repo-structure)
 
 ## :rocket: Features
 
@@ -83,7 +83,7 @@ To build CeLens from source, follow these steps:
 
 Welcome!
 
-### Language, Frameworks & Tools
+### :book: Language, Frameworks & Tools
 
 - TypeScript
 - Tauri
@@ -92,7 +92,7 @@ Welcome!
 - OpenAI API
 - Flowbite Svelte
 
-### Repo structure
+### :open_file_folder: Repo structure
 
 - `Core`
   - Event parsing, inference
