@@ -3,7 +3,7 @@
 	import { Command, open } from '@tauri-apps/plugin-shell';
 	import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 	import * as path from '@tauri-apps/api/path';
-	import { Preprocessor } from '../../../Core/index';
+	import { ExtractionPipeline } from '../../../Core/index';
 	import { readFile } from '@tauri-apps/plugin-fs';
 	import { google, outlook, office365, yahoo, ics, type CalendarEvent } from 'calendar-link';
 	import { Checkbox, Textarea, DarkMode, Label, Button, Input } from 'flowbite-svelte';
@@ -11,12 +11,11 @@
 	// import { DateInput } from 'date-picker-svelte';
 	import { toLocalTime, AppStates } from '$lib/index';
 	import * as fs from '@tauri-apps/plugin-fs';
-	import { goto } from '$app/navigation';
+	// import { goto } from '$app/navigation';
 	import { type eventsType } from '../../../Core/event';
 	import '../app.css';
-	import type { event } from '@tauri-apps/api';
 
-	const debug = true;
+	const debug = false;
 
 	const appWindow = getCurrentWebviewWindow();
 	let { data } = $props();
@@ -25,21 +24,21 @@
 	// Initialize sample event
 	let events = $state<eventsType>([
 		{
-			allDay: false,
-			description: 'Hi, I am a placeholder event!',
-			end: '2024-11-08T13:50:00',
-			location: '',
-			start: '2024-11-08T13:00:00',
-			title: 'Placeholder event 1'
-		},
-		{
+			title: 'MATH-225 Exam 2',
 			allDay: false,
 			description:
 				'Exam 2 for the course MATH-225 covering topics in Linear Algebra and Linear Differential Equations.',
 			end: '2024-11-08T13:50:00',
 			location: '',
-			start: '2024-11-08T13:00:00',
-			title: 'MATH-225 Exam 2'
+			start: '2024-11-08T13:00:00'
+		},
+		{
+			title: 'Placeholder event 2',
+			allDay: false,
+			description: 'Hi, I am a placeholder event!',
+			end: '2024-11-08T13:50:00',
+			location: '',
+			start: '2024-11-08T13:00:00'
 		}
 	]);
 	let linkss = $derived(
@@ -59,7 +58,7 @@
 
 	let imagePath = 'screenshot.png';
 	let log = $state('');
-	let preprocessor: Preprocessor;
+	let pipeline: ExtractionPipeline;
 	let appCacheDirPath;
 	let screenshotDirPath: string;
 	let appState = $state(AppStates.Initializing);
@@ -70,8 +69,6 @@
 
 	let initialized: Promise<void> = init();
 	async function init() {
-		console.log('Loaded config', config);
-
 		appCacheDirPath = await path.appCacheDir();
 		screenshotDirPath = await path.join(appCacheDirPath, 'screenshots');
 		imagePath = await path.join(screenshotDirPath, 'screenshot.png');
@@ -93,7 +90,7 @@
 
 	async function initWithAPIKey() {
 		try {
-			preprocessor = new Preprocessor(config.apiKey);
+			pipeline = new ExtractionPipeline(config.apiKey);
 		} catch (error) {
 			errorMsg = (error as Error).message;
 			appState = AppStates.error;
@@ -133,7 +130,7 @@
 
 		try {
 			if (!debug || false) {
-				const temp: eventsType = await preprocessor.extractEvent(img);
+				const temp: eventsType = await pipeline.processImage(img);
 				temp.forEach((event) => {
 					event.start = toLocalTime(event.start);
 					event.end = toLocalTime(event.end);
@@ -212,39 +209,43 @@
 			</div>
 			<div
 				data-tauri-drag-region
-				class="flex w-96 flex-col gap-y-4 overflow-y-scroll rounded-tl-lg bg-white px-6 py-6 text-sm"
+				class="flex w-96 flex-col gap-y-4 overflow-y-scroll rounded-tl-lg bg-white px-2 py-6 text-sm"
 			>
 				{#each events as event, i}
-					<div class="flex flex-col justify-center gap-y-2">
-						<span class="w-auto p-0.5 text-lg font-bold">
-							<!-- {i + 1}. -->
-							<input
-								type="text"
-								bind:value={event['title']}
-								placeholder={'Title'}
-								class="border-b-only w-11/12"
-							/>
-						</span>
-						<span class="w-auto p-0.5">
-							<input
-								type="datetime-local"
-								class="border-b-only text-xs"
-								bind:value={event['start']}
-							/>
-							-
-							<input
-								type="datetime-local"
-								class="border-b-only text-xs"
-								bind:value={event['end']}
-							/>
-						</span>
-						<Checkbox bind:checked={event['allDay']}>All Day</Checkbox>
-						<span class="w-auto p-0.5">
-							<Label>Description</Label>
-							<Textarea bind:value={event['description']} rows={3} />
-						</span>
-						<!-- other keys -->
-						<!-- {#each eventKeys as key}
+					<div class="pl-4 pr-2">
+						<div class="flex flex-col justify-center gap-y-2">
+							<span class="w-auto p-0.5 text-lg font-bold">
+								<!-- {i + 1}. -->
+								<input
+									type="text"
+									bind:value={event['title']}
+									placeholder={'Title'}
+									class="border-b-only w-11/12"
+								/>
+							</span>
+							<span class="w-auto p-0.5">
+								<input
+									type="datetime-local"
+									class="border-b-only text-xs"
+									bind:value={event['start']}
+								/>
+								-
+								<input
+									type="datetime-local"
+									class="border-b-only text-xs"
+									bind:value={event['end']}
+								/>
+							</span>
+							<Checkbox bind:checked={event['allDay']}>All Day</Checkbox>
+							<span class="w-auto">
+								<Label>Description</Label>
+								<textarea
+									bind:value={event['description']}
+									class="w-full resize-y rounded-md border border-gray-300 p-1.5 text-xs"
+								></textarea>
+							</span>
+							<!-- other keys -->
+							<!-- {#each eventKeys as key}
 						{#if !['title', 'allDay', 'start', 'end', 'description'].includes(key)}
 							<span class="w-auto p-0.5">
 								{key}:
@@ -257,15 +258,16 @@
 							</span>
 						{/if}
 					{/each} -->
-					</div>
-					<div class="flex flex-row justify-around">
-						{#each linkss[i].links as { link, name }}
-							<a href={link} target="_blank">
-								<div class=" h-10 w-14 rounded-sm bg-slate-200 text-center text-xs leading-10">
-									{name}
-								</div>
-							</a>
-						{/each}
+							<div class="flex flex-row justify-around">
+								{#each linkss[i].links as { link, name }}
+									<a href={link} target="_blank">
+										<div class=" h-8 w-14 rounded-sm bg-slate-200 text-center text-xs leading-8">
+											{name}
+										</div>
+									</a>
+								{/each}
+							</div>
+						</div>
 					</div>
 					<!-- if not last event -->
 					{#if i < events.length - 1}

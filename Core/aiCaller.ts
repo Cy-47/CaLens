@@ -1,9 +1,9 @@
 import { OpenAI } from "openai";
 import { extractMsg } from "./prompts";
 import { zodResponseFormat } from "openai/helpers/zod";
-import { eventsSchema } from "./event";
+import { eventListSchema } from "./event";
 
-class aiCaller {
+class AICaller {
   openai: OpenAI;
   model: string = "gpt-4o";
 
@@ -29,20 +29,25 @@ class aiCaller {
       model: this.model,
       messages: extractMsg(image_url),
       temperature: 0.3,
-      max_tokens: 200,
+      max_tokens: 800,
       top_p: 0.9,
       frequency_penalty: 0,
       presence_penalty: 0,
-      response_format: zodResponseFormat(eventsSchema, "events"),
+      response_format: zodResponseFormat(eventListSchema, "eventList"),
     });
+
     console.log(
       "OpenAI response",
       typeof response.choices[0].message.parsed,
       response.choices[0].message.parsed
     );
 
-    return response.choices[0].message.parsed;
+    if (!response.choices[0].message.parsed) {
+      throw new Error("Failed to extract events from image");
+    }
+
+    return response.choices[0].message.parsed.events;
   }
 }
 
-export { aiCaller };
+export default AICaller;
