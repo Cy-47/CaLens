@@ -7,6 +7,9 @@ import * as fs from '@tauri-apps/plugin-fs';
  */
 class Config {
 	private static instance: Config;
+	[key: string]: any;
+	[key: symbol]: any;
+	private static proxyInstance: Config;
 
 	// Define all config items here
 	public apiKey: string;
@@ -27,8 +30,20 @@ class Config {
 		if (!Config.instance) {
 			Config.instance = new Config();
 			await Config.instance.loadConfig();
+			Config.proxyInstance = new Proxy(Config.instance, {
+				set(target, property, value) {
+					if (property in target) {
+						target[property] = value;
+						// Optionally, save the config here if needed
+						// target.saveConfig();
+						return true;
+					} else {
+						throw new Error(`Property ${String(property)} does not exist on Config`);
+					}
+				}
+			});
 		}
-		return Config.instance;
+		return Config.proxyInstance;
 	}
 
 	/**

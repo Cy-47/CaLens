@@ -1,19 +1,21 @@
-<script module>
+<script lang="ts">
 	import Config from '$lib/config';
-	let config = await Config.getInstance();
-</script>
-
-<script>
+	import { onMount } from 'svelte';
 	import { Button } from 'flowbite-svelte';
-	import { register, isRegistered, unregister } from '@tauri-apps/plugin-global-shortcut';
+	import { isRegistered, unregister } from '@tauri-apps/plugin-global-shortcut';
 
-	isRegistered(config.shortCut).then(async (registered) => {
+	let { data } = $props();
+	let config = data.config;
+	let apiKey = $state(config.apiKey);
+
+	onMount(async () => {
+		const registered = await isRegistered(config.shortCut);
 		if (registered) {
 			await unregister(config.shortCut);
 		}
+		apiKey = config.apiKey;
 	});
 
-	let apiKey = $state(config.apiKey);
 	// Function to update the config with the API key
 	function submitAPIKey() {
 		config.apiKey = apiKey;
