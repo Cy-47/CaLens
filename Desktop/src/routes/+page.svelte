@@ -10,7 +10,8 @@
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	// import { DateInput } from 'date-picker-svelte';
 	import { save } from '@tauri-apps/plugin-dialog';
-	import { toLocalTime, AppStates } from '$lib/index';
+	import { AppStates } from '$lib/index';
+	import { toLocalTime, icsCreateEvents } from '$lib/utils';
 	import * as fs from '@tauri-apps/plugin-fs';
 	import { goto } from '$app/navigation';
 	import { type eventsType } from '../../../Core/event';
@@ -19,7 +20,7 @@
 	import { states } from './shared.svelte';
 	import { page } from '$app/stores';
 
-	const debug = false;
+	const debug = true;
 
 	const appWindow = getCurrentWebviewWindow();
 	let { data } = $props();
@@ -151,27 +152,6 @@
 
 		appState = AppStates.showResult;
 		// open(linkss[0].links[3].link);
-	}
-	function icsCreateEvents(events: eventsType): string {
-		const res = ics.createEvents(
-			events.map((event) => {
-				const { allDay, ...rest } = event;
-				// shift the start and end time to beginning and end of day
-				if (allDay) {
-					let start = new Date(rest.start);
-					let end = new Date(rest.end);
-					start.setHours(0, 0, 0, 0);
-					end.setHours(23, 59, 59, 999);
-					rest.start = start.toISOString();
-					rest.end = end.toISOString();
-				}
-				return rest;
-			})
-		);
-		if (res.value === undefined) {
-			throw res.error;
-		}
-		return res.value;
 	}
 </script>
 

@@ -22,7 +22,7 @@ Powered by :eyes: Vision Language Models
 - [:hammer: Build](#hammer-build)
 - [:art: Contribution](#art-contribution)
   - [:book: Language, Frameworks \& Tools](#book-language-frameworks--tools)
-  - [:open_file_folder: Repo structure](#open_file_folder-repo-structure)
+  - [:open\_file\_folder: Repo structure](#open_file_folder-repo-structure)
 
 ## :rocket: Features
 
@@ -56,7 +56,6 @@ After that, just press the shortcut to take screenshots!
 
 > [!WARNING]
 > Currently, the API key is stored as plain text in a config.json file.
->
 > This is fine for usage on a private computer, but may cause the key to be leaked if others have access to the file.
 
 ## :hammer: Build
