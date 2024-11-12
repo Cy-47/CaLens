@@ -22,7 +22,7 @@ Powered by :eyes: Vision Language Models
 - [:hammer: Build](#hammer-build)
 - [:art: Contribution](#art-contribution)
   - [:book: Language, Frameworks \& Tools](#book-language-frameworks--tools)
-  - [:open\_file\_folder: Repo structure](#open_file_folder-repo-structure)
+  - [:open_file_folder: Repo structure](#open_file_folder-repo-structure)
 
 ## :rocket: Features
 
@@ -67,15 +67,14 @@ To build CeLens from source, follow these steps:
    ```sh
    git clone https://github.com/Cy-47/CaLens.git
    ```
-2. Navigate to the project directory:
+2. Install dependencies
    ```sh
-   cd CeLens/Desktop
-   ```
-3. Install the dependencies:
-   ```sh
+   cd CaLens/Core
+   pnpm install
+   cd ../Desktop
    pnpm install
    ```
-4. Build and run the application:
+3. Build and run the application
 
    Use one of the following commands:
 
