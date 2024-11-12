@@ -5,15 +5,19 @@
 	import * as path from '@tauri-apps/api/path';
 	import { ExtractionPipeline } from '../../../Core/index';
 	import { readFile } from '@tauri-apps/plugin-fs';
-	import { google, outlook, office365, yahoo, ics, type CalendarEvent } from 'calendar-link';
+	import { google, outlook, office365, yahoo } from 'calendar-link';
 	import { Checkbox, Textarea, DarkMode, Label, Button, Input } from 'flowbite-svelte';
 	import { convertFileSrc } from '@tauri-apps/api/core';
 	// import { DateInput } from 'date-picker-svelte';
+	import { save } from '@tauri-apps/plugin-dialog';
 	import { toLocalTime, AppStates } from '$lib/index';
 	import * as fs from '@tauri-apps/plugin-fs';
-	// import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { type eventsType } from '../../../Core/event';
+	import * as ics from 'ics';
 	import '../app.css';
+	import { states } from './shared.svelte';
+	import { page } from '$app/stores';
 
 	const debug = false;
 
@@ -41,6 +45,7 @@
 			start: '2024-11-08T13:00:00'
 		}
 	]);
+
 	let linkss = $derived(
 		events.map((event) => ({
 			//   eventId: event.id,
@@ -49,7 +54,7 @@
 				{ name: 'Outlook', link: outlook(event) },
 				{ name: 'Office', link: office365(event) },
 				{ name: 'Yahoo', link: yahoo(event) },
-				{ name: 'ICS', link: ics(event) }
+				{ name: 'ICS', link: ics.createEvent(event).value as string }
 			]
 		}))
 	);
@@ -80,12 +85,13 @@
 				console.log('Test screenshot', output);
 			});
 
-		if (config.apiKey) {
-			console.log('init with API key', config.apiKey);
-			await initWithAPIKey();
-		} else {
-			// goto('/settings');
-		}
+		await initWithAPIKey();
+		// if (config.apiKey) {
+		// 	console.log('init with API key', config.apiKey);
+		// } else {
+		// 	states.prevPage = $page.url.pathname;
+		// 	goto('/settings');
+		// }
 	}
 
 	async function initWithAPIKey() {
@@ -144,43 +150,53 @@
 		}
 
 		appState = AppStates.showResult;
-		setTimeout(() => {
-			appWindow.setFocus();
-		}, 1000);
+		// open(linkss[0].links[3].link);
+	}
+	function icsCreateEvents(events: eventsType): string {
+		const res = ics.createEvents(
+			events.map((event) => {
+				const { allDay, ...rest } = event;
+				// shift the start and end time to beginning and end of day
+				if (allDay) {
+					let start = new Date(rest.start);
+					let end = new Date(rest.end);
+					start.setHours(0, 0, 0, 0);
+					end.setHours(23, 59, 59, 999);
+					rest.start = start.toISOString();
+					rest.end = end.toISOString();
+				}
+				return rest;
+			})
+		);
+		if (res.value === undefined) {
+			throw res.error;
+		}
+		return res.value;
 	}
 </script>
 
 <!-- <DateInput bind:value={date} timePrecision="minute" /> -->
 
-<div class="data-tauri-drag-region data-tauri-drag-region mt-8 flex min-h-0 shrink grow">
+<div class="data-tauri-drag-region data-tauri-drag-region flex min-h-0 shrink grow">
 	{#if appState == AppStates.Initializing}
-		<div
-			data-tauri-drag-region
-			class="flex grow flex-col items-center justify-center text-xl text-gray-700"
-		>
+		<div data-tauri-drag-region class="flex grow flex-col items-center justify-center text-xl">
 			<p>Initializing</p>
 		</div>
 	{:else if appState == AppStates.AskingForAPIKey}{:else if appState == AppStates.NoScreenshot}
-		<div
-			data-tauri-drag-region
-			class="flex grow flex-col items-center justify-center text-xl text-gray-700"
-		>
+		<div data-tauri-drag-region class="flex grow flex-col items-center justify-center text-xl">
 			<p>Snip an event with</p>
 			<p>Command+Shift+C!</p>
-			<p class="text-l text-gray-500">Cancel by ESC</p>
+			<p class="text-l text-secondary">Cancel by ESC</p>
 		</div>
 	{:else if appState == AppStates.TakingScreenshot}
-		<div
-			data-tauri-drag-region
-			class="flex grow flex-col items-center justify-center text-xl text-gray-700"
-		>
+		<div data-tauri-drag-region class="flex grow flex-col items-center justify-center text-xl">
 			<p>Taking Screenshot...</p>
 			<p>Cancel by ESC</p>
 		</div>
 	{:else if appState == AppStates.Processing}
 		<div
 			data-tauri-drag-region
-			class="data-tauri-drag-region flex h-full w-full grow flex-col items-center justify-center text-xl text-gray-700"
+			class="data-tauri-drag-region flex h-full w-full grow flex-col items-center justify-center text-xl"
 		>
 			<div
 				data-tauri-drag-region
@@ -209,74 +225,93 @@
 			</div>
 			<div
 				data-tauri-drag-region
-				class="flex w-96 flex-col gap-y-4 overflow-y-scroll rounded-tl-lg bg-white px-2 py-6 text-sm"
+				class="bg-accent flex w-96 flex-col rounded-tl-lg px-2 py-4 text-sm"
 			>
-				{#each events as event, i}
-					<div class="pl-4 pr-2">
-						<div class="flex flex-col justify-center gap-y-2">
-							<span class="w-auto p-0.5 text-lg font-bold">
-								<!-- {i + 1}. -->
-								<input
-									type="text"
-									bind:value={event['title']}
-									placeholder={'Title'}
-									class="border-b-only w-11/12"
-								/>
-							</span>
-							<span class="w-auto p-0.5">
-								<input
-									type="datetime-local"
-									class="border-b-only text-xs"
-									bind:value={event['start']}
-								/>
-								-
-								<input
-									type="datetime-local"
-									class="border-b-only text-xs"
-									bind:value={event['end']}
-								/>
-							</span>
-							<Checkbox bind:checked={event['allDay']}>All Day</Checkbox>
-							<span class="w-auto">
-								<Label>Description</Label>
-								<textarea
-									bind:value={event['description']}
-									class="w-full resize-y rounded-md border border-gray-300 p-1.5 text-xs"
-								></textarea>
-							</span>
-							<!-- other keys -->
-							<!-- {#each eventKeys as key}
-						{#if !['title', 'allDay', 'start', 'end', 'description'].includes(key)}
-							<span class="w-auto p-0.5">
-								{key}:
-								<input
-									type="text"
-									bind:value={event[key]}
-									placeholder={key}
-									class="border-b-only"
-								/>
-							</span>
-						{/if}
-					{/each} -->
-							<div class="flex flex-row justify-around">
-								{#each linkss[i].links as { link, name }}
-									<a href={link} target="_blank">
-										<div class=" h-8 w-14 rounded-sm bg-slate-200 text-center text-xs leading-8">
-											{name}
-										</div>
-									</a>
-								{/each}
-							</div>
+				<div class="flex grow flex-col gap-y-4 overflow-y-auto" style="scrollbar-width:thin;">
+					{#if events.length == 0}
+						<div
+							data-tauri-drag-region
+							class="align-center flex grow flex-col items-center justify-center text-xl"
+						>
+							<p>No Events Found</p>
 						</div>
-					</div>
-					<!-- if not last event -->
-					{#if i < events.length - 1}
-						<div class="mt-2 w-full border-b border-gray-400"></div>
+					{:else}
+						{#each events as event, i}
+							<div class="pl-4 pr-2">
+								<div class="flex flex-col justify-center gap-y-2">
+									<span class="w-auto p-0.5 text-lg font-bold">
+										<!-- {i + 1}. -->
+										<input
+											type="text"
+											bind:value={event['title']}
+											placeholder={'Title'}
+											class="border-b-only w-full"
+										/>
+									</span>
+									<span class="w-auto p-0.5">
+										<input
+											type="datetime-local"
+											class="border-b-only text-xs"
+											bind:value={event['start']}
+										/>
+										-
+										<input
+											type="datetime-local"
+											class="border-b-only text-xs"
+											bind:value={event['end']}
+										/>
+									</span>
+									<Checkbox bind:checked={event['allDay']}>All Day</Checkbox>
+									<span class="w-auto">
+										<Label>Description</Label>
+										<textarea
+											bind:value={event['description']}
+											class="w-full resize-y rounded-md border border-gray-300 p-1.5 text-xs"
+										></textarea>
+									</span>
+									<div class="flex flex-row justify-around">
+										{#each linkss[i].links as { link, name }}
+											<a href={link} target="_blank">
+												<div
+													class=" h-8 w-14 rounded-sm !bg-slate-200 text-center text-xs leading-8 dark:!bg-slate-600"
+												>
+													{name}
+												</div>
+											</a>
+										{/each}
+									</div>
+								</div>
+							</div>
+							<!-- if not last event -->
+							{#if i < events.length - 1}
+								<div class="mt-2 w-full border-b border-gray-400 dark:!border-gray-500"></div>
+							{/if}
+						{/each}
 					{/if}
-				{/each}
+				</div>
+				<div class="mb-2 mt-4">
+					<!-- Save All -->
+					<center>
+						<Button
+							class="!bg-primary-500 p-2"
+							on:click={async () => {
+								const filePath = await save({
+									defaultPath: 'events.ics',
+									filters: [{ name: 'iCalendar', extensions: ['ics'] }]
+								});
+								if (filePath) {
+									const data = icsCreateEvents(events) as string;
+									fs.writeTextFile(filePath, data).then(() => {
+										console.log('File written:', filePath);
+									});
+								}
+							}}>Save All</Button
+						>
+					</center>
+				</div>
 			</div>
 		</div>
-	{:else if appState == AppStates.error}
+	{:else}
 		<div
 			class="flex grow flex-col items-center justify-center gap-1 text-center text-xl text-red-600"
 		>

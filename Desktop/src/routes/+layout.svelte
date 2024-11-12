@@ -1,29 +1,36 @@
 <script lang="ts">
 	import { BarsOutline } from 'flowbite-svelte-icons';
+	import { DarkMode } from 'flowbite-svelte';
 	import '../app.css';
+	import Config from '$lib/config';
 	// import { AppStates } from '$lib';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { states } from './shared.svelte';
 
 	let { data, children } = $props();
-	let prevState = '/';
+	if (Config.isFirstTime()) {
+		goto('/settings');
+	}
 </script>
 
-<div class="flex h-screen w-screen flex-col bg-slate-50">
-	<div class="fixed z-50 h-8 w-full" data-tauri-drag-region>
-		<button
-			class="float-right m-1 mr-2"
-			onclick={() => {
-				if ($page.url.pathname === '/settings') {
-					goto(prevState);
-				} else {
-					prevState = $page.url.pathname;
-					goto('/settings');
-				}
-			}}
-		>
-			<BarsOutline />
-		</button>
+<div class=" flex h-screen w-screen flex-col">
+	<div class=" z-50 w-full" data-tauri-drag-region>
+		<div class="float-right m-1 mr-2">
+			<DarkMode class="p-1" />
+			<button
+				onclick={() => {
+					if ($page.url.pathname === '/settings') {
+						goto(states.prevPage);
+					} else {
+						states.prevPage = $page.url.pathname;
+						goto('/settings');
+					}
+				}}
+			>
+				<BarsOutline class="dark:text-white" />
+			</button>
+		</div>
 	</div>
 	{@render children()}
 </div>

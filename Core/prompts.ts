@@ -1,5 +1,4 @@
-import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
-import z from "zod";
+import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 export function extractMsg(image_url: string): ChatCompletionMessageParam[] {
   const now = new Date();
@@ -8,7 +7,12 @@ export function extractMsg(image_url: string): ChatCompletionMessageParam[] {
       role: "system",
       content: [
         {
-          text: `You are part of a software that extracts events from images and add them to the user's calendar. You will be provided with images showing events. Your task is to extract the event information from them.\n The current time is ${now.toString()}. Provide output in JSON format.`,
+          text:
+            `You will be provided with images showing events. ` +
+            `Your task is to first determin whether the given image contain at least one event, and then extract the information about all of the events (if there is any).\n` +
+            `If an activity contains multiple dates or time that cannot be stored in a single event, output them as separate events and use a common title prefix to show their relation. ` +
+            `Provide output in JSON format.\n` +
+            `The current time is ${now.toString()}.`,
           type: "text",
         },
       ],

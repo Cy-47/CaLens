@@ -10,8 +10,7 @@ Powered by :eyes: Vision Language Models
 
 </div>
 
-![CeLens Screenshot](./screenshot.png)
-_\*Screenshot is taken in Pacific Time_
+![CeLens Screenshot](./screenshots/0.1.2/icml_light.png)
 
 ## :paperclip: Contents
 
@@ -30,13 +29,16 @@ _\*Screenshot is taken in Pacific Time_
 - :crystal_ball: Intelligent extraction & summary by Vision LLM
 - :scissors: Take screenshot anywhere global shortcut
 - :link: Show links to mainstream calendars
+- :zap: Add multiple events in one time
+- :moon: Dark mode
 
 ### :dart: Planned
 
-- :zap: Add multiple events in one time
 - $\int$ Google calendar API integration
 - :floppy_disk: Download ICS
 - :cloud: Officially hosted server
+
+![CeLens Screenshot](./screenshots/0.1.2/gradescope_dark.png)
 
 ## :computer: Supported OS
 
@@ -51,6 +53,11 @@ _\*Screenshot is taken in Pacific Time_
 The app is currently in early development. You will need to provide your own OpenAI API key, which will be stored locally in the app's config directory.
 
 After that, just press the shortcut to take screenshots!
+
+> [!WARNING]
+> Currently, the API key is stored as plain text in a config.json file.
+>
+> This is fine for usage on a private computer, but may cause the key to be leaked if others have access to the file.
 
 ## :hammer: Build
 

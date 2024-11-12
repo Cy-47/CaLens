@@ -7,20 +7,18 @@ import * as fs from '@tauri-apps/plugin-fs';
  */
 class Config {
 	private static instance: Config;
+	private static proxyInstance: Config;
+	private static appConfigDirPath: string;
+	private static configFilePath: string;
+	private static firstTime: boolean = false;
 	[key: string]: any;
 	[key: symbol]: any;
-	private static proxyInstance: Config;
 
 	// Define all config items here
-	public apiKey: string;
-	public shortCut: string;
-	// Add future config items below
+	public apiKey: string = 'defaultApiKey';
+	public shortCut: string = 'CommandOrControl+Shift+C';
 
-	private constructor() {
-		this.apiKey = 'defaultApiKey';
-		this.shortCut = 'CommandOrControl+Shift+C';
-		// Initialize future config items here
-	}
+	private constructor() {}
 
 	/**
 	 * Returns the singleton instance of the Config class.
@@ -29,13 +27,15 @@ class Config {
 	public static async getInstance(): Promise<Config> {
 		if (!Config.instance) {
 			Config.instance = new Config();
+			Config.appConfigDirPath = await path.appConfigDir();
+			Config.configFilePath = await path.join(Config.appConfigDirPath, 'config.json');
+
 			await Config.instance.loadConfig();
 			Config.proxyInstance = new Proxy(Config.instance, {
 				set(target, property, value) {
 					if (property in target) {
 						target[property] = value;
-						// Optionally, save the config here if needed
-						// target.saveConfig();
+						target.saveConfig();
 						return true;
 					} else {
 						throw new Error(`Property ${String(property)} does not exist on Config`);
@@ -51,17 +51,15 @@ class Config {
 	 * If the config file does not exist, it creates a new one with default values.
 	 */
 	private async loadConfig() {
-		const appConfigDirPath = await path.appConfigDir();
-		const configFile = await path.join(appConfigDirPath, 'config.json');
-
 		try {
-			const exists = await fs.exists(configFile);
+			const exists = await fs.exists(Config.configFilePath);
+			Config.firstTime = !exists;
 			if (exists) {
-				const content = await fs.readTextFile(configFile);
+				const content = await fs.readTextFile(Config.configFilePath);
 				const configData: Partial<Config> = JSON.parse(content);
 				Object.assign(this, configData);
 			} else {
-				await this.saveConfig(configFile);
+				await this.saveConfig();
 			}
 		} catch (error) {
 			console.error('Failed to load config:', error);
@@ -72,13 +70,21 @@ class Config {
 	 * Saves the current configuration to the config file.
 	 * @param configFile Path to the config file.
 	 */
-	private async saveConfig(configFile: string) {
+	private async saveConfig() {
 		const configData = {
 			apiKey: this.apiKey,
 			shortCut: this.shortCut
 			// Include future config items here
 		};
-		await fs.writeTextFile(configFile, JSON.stringify(configData, null, 2));
+		await fs.writeTextFile(Config.configFilePath, JSON.stringify(configData, null, 2));
+	}
+
+	/**
+	 * Returns whether the application is running for the first time.
+	 * @returns {boolean} True if the application is running for the first time.
+	 */
+	public static isFirstTime(): boolean {
+		return Config.firstTime;
 	}
 }
 

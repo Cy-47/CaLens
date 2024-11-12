@@ -1,6 +1,6 @@
 {
 	"name": "celens-desktop",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -40,12 +40,14 @@
 	},
 	"dependencies": {
 		"@tauri-apps/api": "^2.0.3",
+		"@tauri-apps/plugin-dialog": "~2.0.1",
 		"@tauri-apps/plugin-fs": "~2.0.2",
 		"@tauri-apps/plugin-global-shortcut": "~2.0.0",
 		"@tauri-apps/plugin-shell": "~2.0.1",
 		"add-to-calendar-button": "^2.7.3",
 		"calendar-link": "^2.7.0",
 		"date-fns": "^4.1.0",
-		"date-picker-svelte": "^2.14.0"
+		"date-picker-svelte": "^2.14.0",
+		"ics": "^3.8.1"
 	}
 }

@@ -6,4 +6,26 @@
 	.border-b-only {
 		@apply border-0 border-b-[1px] border-gray-300 p-1 focus:ring-0;
 	}
+
+	body * :not(input[type='checkbox']:checked):not(input[type='radio']:checked) {
+		@apply transition-colors duration-500;
+	}
+
+	body
+		*
+		:not(input[type='checkbox']:checked):not(input[type='radio']:checked):not(button):not(
+			.bg-accent,
+			.bg-accent *
+		) {
+		@apply bg-slate-50 text-black dark:border-gray-600 dark:bg-neutral-800 dark:text-slate-100;
+	}
+
+	.bg-accent,
+	.bg-accent * :not(input[type='checkbox']:checked):not(input[type='radio']:checked):not(button) {
+		@apply bg-white text-black dark:border-gray-600 dark:bg-[#2b2b2b] dark:text-slate-100;
+	}
+
+	.text-secondary {
+		@apply text-gray-500 dark:text-gray-400;
+	}
 }
