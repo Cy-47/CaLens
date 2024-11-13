@@ -15,7 +15,7 @@ class Config {
 	[key: symbol]: any;
 
 	// Define all config items here
-	public apiKey: string = 'defaultApiKey';
+	public apiKey: string = '';
 	public shortCut: string = 'CommandOrControl+Shift+C';
 
 	private constructor() {}
@@ -76,6 +76,12 @@ class Config {
 			shortCut: this.shortCut
 			// Include future config items here
 		};
+		console.log('Saving config:', configData);
+		// Create dir if it does not exist
+		if (!(await fs.exists(Config.appConfigDirPath))) {
+			console.log('Creating config dir');
+			await fs.mkdir(Config.appConfigDirPath, { recursive: true });
+		}
 		await fs.writeTextFile(Config.configFilePath, JSON.stringify(configData, null, 2));
 	}
 

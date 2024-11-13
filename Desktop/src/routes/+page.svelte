@@ -20,7 +20,8 @@
 	import { states } from './shared.svelte';
 	import { page } from '$app/stores';
 
-	const debug = true;
+	let debug = import.meta.env.DEV;
+	debug = false;
 
 	const appWindow = getCurrentWebviewWindow();
 	let { data } = $props();
@@ -54,8 +55,8 @@
 				{ name: 'Google', link: google(event) },
 				{ name: 'Outlook', link: outlook(event) },
 				{ name: 'Office', link: office365(event) },
-				{ name: 'Yahoo', link: yahoo(event) },
-				{ name: 'ICS', link: ics.createEvent(event).value as string }
+				{ name: 'Yahoo', link: yahoo(event) }
+				// { name: 'ICS', link: ics.createEvent(event).value as string }
 			]
 		}))
 	);
