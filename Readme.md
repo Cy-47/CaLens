@@ -22,7 +22,7 @@ Powered by :eyes: Vision Language Models
 - [:hammer: Build](#hammer-build)
 - [:art: Contribution](#art-contribution)
   - [:book: Language, Frameworks \& Tools](#book-language-frameworks--tools)
-  - [:open\_file\_folder: Repo structure](#open_file_folder-repo-structure)
+  - [:open_file_folder: Repo structure](#open_file_folder-repo-structure)
 
 ## :rocket: Features
 
@@ -62,18 +62,19 @@ After that, just press the shortcut to take screenshots!
 
 To build CeLens from source, follow these steps:
 
-1. Clone the repository:
+1. Install [pnpm](https://pnpm.io/installation) (or [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)) and [rust](https://www.rust-lang.org/tools/install)
+2. Clone the repository:
    ```sh
    git clone https://github.com/Cy-47/CaLens.git
    ```
-2. Install dependencies
+3. Install dependencies
    ```sh
    cd CaLens/Core
    pnpm install
    cd ../Desktop
    pnpm install
    ```
-3. Build and run the application
+4. Build and run the application
 
    Use one of the following commands:
 
