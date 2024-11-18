@@ -1,5 +1,5 @@
 // $lib/config.ts
-import { path } from '@tauri-apps/api';
+import { appConfigDir, join } from '@tauri-apps/api/path';
 import * as fs from '@tauri-apps/plugin-fs';
 
 /**
@@ -27,8 +27,8 @@ class Config {
 	public static async getInstance(): Promise<Config> {
 		if (!Config.instance) {
 			Config.instance = new Config();
-			Config.appConfigDirPath = await path.appConfigDir();
-			Config.configFilePath = await path.join(Config.appConfigDirPath, 'config.json');
+			Config.appConfigDirPath = await appConfigDir();
+			Config.configFilePath = await join(Config.appConfigDirPath, 'config.json');
 
 			await Config.instance.loadConfig();
 			Config.proxyInstance = new Proxy(Config.instance, {

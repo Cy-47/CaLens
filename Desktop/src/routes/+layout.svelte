@@ -9,8 +9,19 @@
 	import { states } from './shared.svelte';
 
 	let { data, children } = $props();
+	console.log(page, $page);
 	if (Config.isFirstTime()) {
 		goto('/settings');
+	}
+
+	function toggleSettings() {
+		console.log('toggleSettings', $page.route.id, states.prevPage);
+		if ($page.route.id === '/settings') {
+			goto(states.prevPage);
+		} else {
+			states.prevPage = $page.route.id as string;
+			goto('/settings');
+		}
 	}
 </script>
 
@@ -18,16 +29,7 @@
 	<div class=" z-50 w-full" data-tauri-drag-region>
 		<div class="float-right m-1 mr-2">
 			<DarkMode class="p-1" />
-			<button
-				onclick={() => {
-					if ($page.url.pathname === '/settings') {
-						goto(states.prevPage);
-					} else {
-						states.prevPage = $page.url.pathname;
-						goto('/settings');
-					}
-				}}
-			>
+			<button onclick={toggleSettings}>
 				<BarsOutline class="dark:text-white" />
 			</button>
 		</div>
