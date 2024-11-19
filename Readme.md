@@ -9,7 +9,8 @@ Simply take a screenshot with CeLens, and it will automatically add the event to
 Powered by :eyes: Vision Language Models
 
 Join the [discord server](https://discord.gg/VUW9EX8k) for release, updates, support, and more!
-[![](https://dcbadge.limes.pink/api/server/INVITE)](https://discord.gg/VUW9EX8k)
+
+[![](https://dcbadge.limes.pink/api/server/VUW9EX8k)](https://discord.gg/VUW9EX8k)
 
 </div>
 
