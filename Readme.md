@@ -8,6 +8,9 @@ Simply take a screenshot with CeLens, and it will automatically add the event to
 
 Powered by :eyes: Vision Language Models
 
+Join the [discord server](https://discord.gg/VUW9EX8k) for release, updates, support, and more!
+[![](https://dcbadge.limes.pink/api/server/INVITE)](https://discord.gg/VUW9EX8k)
+
 </div>
 
 ![CeLens Screenshot](./screenshots/0.1.2/icml_light.png)
@@ -22,7 +25,7 @@ Powered by :eyes: Vision Language Models
 - [:hammer: Build](#hammer-build)
 - [:art: Contribution](#art-contribution)
   - [:book: Language, Frameworks \& Tools](#book-language-frameworks--tools)
-  - [:open_file_folder: Repo structure](#open_file_folder-repo-structure)
+  - [:open\_file\_folder: Repo structure](#open_file_folder-repo-structure)
 
 ## :rocket: Features
 

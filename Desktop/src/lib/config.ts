@@ -11,8 +11,6 @@ class Config {
 	private static appConfigDirPath: string;
 	private static configFilePath: string;
 	private static firstTime: boolean = false;
-	[key: string]: any;
-	[key: symbol]: any;
 
 	// Define all config items here
 	public apiKey: string = '';
@@ -34,7 +32,7 @@ class Config {
 			Config.proxyInstance = new Proxy(Config.instance, {
 				set(target, property, value) {
 					if (property in target) {
-						target[property] = value;
+						target[property as keyof Config] = value;
 						target.saveConfig();
 						return true;
 					} else {

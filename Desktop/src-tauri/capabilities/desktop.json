@@ -7,6 +7,42 @@
 		"core:window:allow-start-dragging",
 		"dialog:allow-save",
 		"dialog:default",
-		"core:path:default"
+		"core:path:default",
+		"core:default",
+		"fs:allow-read-file",
+		"fs:allow-write-file",
+		"fs:allow-read-dir",
+		"fs:allow-copy-file",
+		"fs:allow-mkdir",
+		"fs:allow-remove",
+		"fs:allow-remove",
+		"fs:allow-rename",
+		"fs:allow-exists",
+		"fs:allow-app-write",
+		"fs:allow-app-write-recursive",
+		{
+			"identifier": "fs:scope",
+			"allow": ["$APPCACHE", "$APPCACHE/*", "$APPCACHE/*/*", "$APPCONFIG", "$APPCONFIG/*"]
+		},
+		"core:window:allow-set-focus",
+		{
+			"identifier": "shell:allow-execute",
+			"allow": [
+				{
+					"args": true,
+					"cmd": "screencapture",
+					"name": "screencapture",
+					"sidecar": false
+				}
+			]
+		},
+		"shell:allow-open",
+		"global-shortcut:allow-is-registered",
+		"global-shortcut:allow-register",
+		"global-shortcut:allow-register-all",
+		"global-shortcut:allow-unregister",
+		"global-shortcut:allow-unregister-all",
+		"fs:default",
+		"shell:default"
 	]
 }
