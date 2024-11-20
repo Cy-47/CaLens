@@ -14,10 +14,10 @@ Powered by :eyes: Vision Language Models
 Join the [discord server](https://discord.gg/VUW9EX8k) for release, updates, support, and more!
 
 [![](https://dcbadge.limes.pink/api/server/VUW9EX8k)](https://discord.gg/VUW9EX8k)
+![CeLens Screenshot](./screenshots/0.1.2/icml_light.png)
+:star: Star if you like this project!
 
 </div>
-
-![CeLens Screenshot](./screenshots/0.1.2/icml_light.png)
 
 ## :rocket: Features
 
@@ -89,9 +89,9 @@ Welcome!
 - TypeScript
 - Tauri
 - SvelteKit & Vite
-- TailwindCSS
 - OpenAI API
 - Flowbite Svelte
+- TailwindCSS
 
 ### :open_file_folder: Repo structure
 
