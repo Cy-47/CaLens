@@ -22,10 +22,9 @@ Join the [discord server](https://discord.gg/VUW9EX8k) for release, updates, sup
 ## :rocket: Features
 
 - :crystal_ball: Intelligent extraction & summary by Vision LLM
-- :scissors: Take screenshot anywhere global shortcut
+- :scissors: Take screenshot anywhere with global shortcut
 - :link: Show links to mainstream calendars
-- :zap: Add multiple events in one time
-- :moon: Dark mode
+- :zap: Add many events at once!
 
 ### :dart: Planned
 
