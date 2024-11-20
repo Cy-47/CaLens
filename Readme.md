@@ -1,5 +1,6 @@
 <div align="center">
  <img src="./Desktop/src-tauri/icons/appicon.png" width=30%>
+ 
  <h1>CaLens</h1>
 
 :x: No more manual event or deadline entries!
@@ -8,6 +9,8 @@ Simply take a screenshot with CeLens, and it will automatically add the event to
 
 Powered by :eyes: Vision Language Models
 
+[![MacOS](https://img.shields.io/badge/-MacOS-black?logo=apple)](https://github.com/Cy-47/CaLens/releases/)
+
 Join the [discord server](https://discord.gg/VUW9EX8k) for release, updates, support, and more!
 
 [![](https://dcbadge.limes.pink/api/server/VUW9EX8k)](https://discord.gg/VUW9EX8k)
@@ -15,18 +18,6 @@ Join the [discord server](https://discord.gg/VUW9EX8k) for release, updates, sup
 </div>
 
 ![CeLens Screenshot](./screenshots/0.1.2/icml_light.png)
-
-## :paperclip: Contents
-
-- [:paperclip: Contents](#paperclip-contents)
-- [:rocket: Features](#rocket-features)
-  - [:dart: Planned](#dart-planned)
-- [:computer: Supported OS](#computer-supported-os)
-- [:cake: Usage](#cake-usage)
-- [:hammer: Build](#hammer-build)
-- [:art: Contribution](#art-contribution)
-  - [:book: Language, Frameworks \& Tools](#book-language-frameworks--tools)
-  - [:open\_file\_folder: Repo structure](#open_file_folder-repo-structure)
 
 ## :rocket: Features
 
@@ -54,7 +45,7 @@ Join the [discord server](https://discord.gg/VUW9EX8k) for release, updates, sup
 
 ## :cake: Usage
 
-The app is currently in early development. You will need to provide your own OpenAI API key, which will be stored locally in the app's config directory.
+Before the release of the officially hosted version, you will need to provide your own [OpenAI API key](https://openai.com/index/openai-api/), which will be stored locally in the app's config directory. Note: [tier 1](https://platform.openai.com/docs/guides/rate-limits#usage-tiers) is required to access gpt-4o.
 
 After that, just press the shortcut to take screenshots!
 
